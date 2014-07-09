@@ -1,0 +1,17 @@
+{
+   "interface":":4984",
+   "adminInterface":":4985",
+   "log":["REST"],
+   "databases":{
+      "cbl-is-test":{
+         "server":"http://localhost:8091",
+         "bucket":"cbl-is-test",
+	 "users": {
+		"GUEST": {"disabled": false, "admin_channels":["public"]}
+	 },
+         "sync":`function(doc) {
+	    channel("public");
+	 }`
+      }
+   }
+}

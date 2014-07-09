@@ -9,6 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface CITAppDelegate : UIResponder <UIApplicationDelegate>
+{
+    NSManagedObjectModel *managedObjectModel;
+    NSManagedObjectContext *managedObjectContext;
+    NSPersistentStoreCoordinator *persistentStoreCoordinator;
+}
 
 @property (strong, nonatomic) UIWindow *window;
 
