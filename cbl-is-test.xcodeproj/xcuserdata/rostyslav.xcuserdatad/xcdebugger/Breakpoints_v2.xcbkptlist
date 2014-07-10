@@ -104,11 +104,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Frameworks/Extras/CBLIncrementalStore.m"
-            timestampString = "426612363.207402"
+            timestampString = "426679955.719408"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1625"
-            endingLineNumber = "1625"
+            startingLineNumber = "1626"
+            endingLineNumber = "1626"
             landmarkName = "-_propertiesForDeletingDocument:"
             landmarkType = "5">
          </BreakpointContent>

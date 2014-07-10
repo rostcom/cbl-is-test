@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 - (IBAction)addNote:(id)sender;
+- (IBAction)printNotes:(id)sender;
 
 @end
 
@@ -216,6 +217,42 @@
                                               otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
     [alertView show];
+}
+
+- (IBAction)printNotes:(id)sender {
+    UIPrintInteractionController *pic = [UIPrintInteractionController sharedPrintController];
+    pic.delegate = self;
+    
+    UIPrintInfo *printInfo = [UIPrintInfo printInfo];
+    printInfo.outputType = UIPrintInfoOutputGeneral;
+    printInfo.jobName = self.contact.name;
+    pic.printInfo = printInfo;
+    
+    NSMutableString *string = [[NSMutableString alloc] initWithFormat:@"Notes of %@:", self.contact.name];
+    [string appendString:@"\n\n"];
+    for (Note *note in self.fetchedResultsController.fetchedObjects) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateStyle = NSDateFormatterShortStyle;
+        dateFormatter.timeStyle = NSDateFormatterShortStyle;
+        [string appendFormat:@"\n%@ at %@", note.text, [dateFormatter stringFromDate:note.date]];
+    }
+    
+    
+    UISimpleTextPrintFormatter *textFormatter = [[UISimpleTextPrintFormatter alloc] initWithText:string];
+    textFormatter.startPage = 0;
+    textFormatter.contentInsets = UIEdgeInsetsMake(72.0, 72.0, 72.0, 72.0); // 1 inch margins
+    textFormatter.maximumContentWidth = 6 * 72.0;
+    pic.printFormatter = textFormatter;
+    pic.showsPageRange = YES;
+    
+    void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
+    ^(UIPrintInteractionController *printController, BOOL completed, NSError *error) {
+        if (!completed && error) {
+            NSLog(@"Printing could not complete because of error: %@", error);
+        }
+    };
+    
+    [pic presentFromBarButtonItem:sender animated:YES completionHandler:completionHandler];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
